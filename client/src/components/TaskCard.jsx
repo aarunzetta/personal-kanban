@@ -44,13 +44,13 @@ function TaskCard({ task, index, onEdit, onDelete }) {
                   onClick={() => setShowEditModal(true)}
                   className="text-gray-400 hover:text-blue-400 text-xs px-1.5 py-0.5 rounded transition-colors"
                 >
-                  ✏️
+                  Edit
                 </button>
                 <button
                   onClick={() => onDelete(task._id)}
                   className="text-gray-400 hover:text-red-400 text-xs px-1.5 py-0.5 rounded transition-colors"
                 >
-                  🗑️
+                  Delete
                 </button>
               </div>
             </div>
