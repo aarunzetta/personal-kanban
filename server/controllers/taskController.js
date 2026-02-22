@@ -1,6 +1,6 @@
 import Task from "../models/Task.js";
 
-export const getAllTask = async (req, res) => {
+export const getAllTasks = async (req, res) => {
   try {
     const tasks = await Task.find().sort({ column: 1, order: 1 });
     req.status(200).json(tasks);
