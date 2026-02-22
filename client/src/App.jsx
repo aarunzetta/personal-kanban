@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
-import { fetchTasks, createTask, updateTask, deleteTask } from "./api/tasks";
 import Board from "./components/Board";
+import AddTaskModal from "./components/AddTaskModal";
+import { fetchTasks, createTask, updateTask, deleteTask } from "./api/tasks";
 
 const COLUMNS = ["Backlog", "To Do", "In Progress", "Done"];
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showAddModal, setShowAddModal] = useState(false);
 
+  // Load all tasks from the backend on mount
   useEffect(() => {
     loadTasks();
   }, []);
@@ -20,6 +23,16 @@ function App() {
       console.error("Failed to load tasks:", err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleAddTask = async (taskData) => {
+    try {
+      const res = await createTask(taskData);
+      setTasks((prev) => [...prev, res.data]);
+      setShowAddModal(false);
+    } catch (err) {
+      console.error("Failed to create task:", err);
     }
   };
 
@@ -41,6 +54,7 @@ function App() {
     }
   };
 
+  // Called after a drag ends — updates the task's column in DB
   const handleDragEnd = async (result) => {
     const { destination, source, draggableId } = result;
 
@@ -68,27 +82,35 @@ function App() {
       await updateTask(draggableId, { column: newColumn });
     } catch (err) {
       console.error("Failed to move task:", err);
-      loadTasks();
-    }
-
-    if (loading) {
-      return (
-        <div>
-          <p>Loading board...</p>
-        </div>
-      );
+      loadTasks(); // revert on failure
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-900">
+        <p className="text-white text-xl">Loading board...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
+      {/* Header */}
       <header className="bg-gray-800 border-b border-gray-700 px-6 py-4 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-white tracking-tight">
-          Personal Kanban by Aaron
+          Kanban By Aaron
         </h1>
-        <button>+ Add Task</button>
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+        >
+          + Add Task
+        </button>
       </header>
 
-      <main>
+      {/* Board */}
+      <main className="p-6">
         <Board
           columns={COLUMNS}
           tasks={tasks}
@@ -97,6 +119,15 @@ function App() {
           onDelete={handleDeleteTask}
         />
       </main>
+
+      {/* Add Task Modal */}
+      {showAddModal && (
+        <AddTaskModal
+          columns={COLUMNS}
+          onAdd={handleAddTask}
+          onClose={() => setShowAddModal(false)}
+        />
+      )}
     </div>
   );
 }
