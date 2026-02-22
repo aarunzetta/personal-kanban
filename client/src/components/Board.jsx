@@ -1,10 +1,10 @@
 import { DragDropContext } from "@hello-pangea/dnd";
 import Column from "./Column";
 
-export default function Board({ columns, tasks, onDragEnd, onEdit, onDelete }) {
+function Board({ columns, tasks, onDragEnd, onEdit, onDelete }) {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div>
+      <div className="flex gap-4 overflow-x-auto pb-4">
         {columns.map((columnName) => (
           <Column
             key={columnName}
@@ -18,3 +18,5 @@ export default function Board({ columns, tasks, onDragEnd, onEdit, onDelete }) {
     </DragDropContext>
   );
 }
+
+export default Board;
