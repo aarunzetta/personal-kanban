@@ -52,14 +52,17 @@ function Column({ columnName, tasks, onEdit, onDelete }) {
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className={`flex-1 p-3 flex flex-col gap-2 min-h-32 transition-colors rounded-b-xl ${
+            className={`flex-1 p-3 flex flex-col gap-2  transition-colors rounded-b-xl ${
               snapshot.isDraggingOver ? "bg-gray-700" : ""
             }`}
           >
             {tasks.length === 0 && !snapshot.isDraggingOver && (
-              <p className="text-gray-600 text-xs text-center mt-4">
-                No tasks here
-              </p>
+              // <p className="text-gray-600 text-xs text-center mt-4">
+              //   No tasks here
+              // </p>
+              <button className="bg-none hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                + Add a card
+              </button>
             )}
 
             {tasks.map((task, index) => (
