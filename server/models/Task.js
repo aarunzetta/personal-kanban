@@ -26,6 +26,37 @@ const taskSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    dueDate: {
+      type: Date,
+      default: null,
+    },
+    estimatedHours: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    actualHours: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    timeTracking: [
+      {
+        date: {
+          type: Date,
+          default: Date.now,
+        },
+        hours: {
+          type: Number,
+          required: true,
+          min: 0,
+        },
+        description: {
+          type: String,
+          default: "",
+        },
+      },
+    ],
   },
   { timestamps: true },
 );
