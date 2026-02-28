@@ -8,6 +8,22 @@ const PRIORITY_STYLES = {
   High: "bg-red-900 text-red-300 border border-red-700",
 };
 
+const formatDate = (dateString) => {
+  if (!dateString) return null;
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year:
+      date.getFullYear() !== new Date().getFullYear() ? "numeric" : undefined,
+  });
+};
+
+const isOverdue = (dueDate) => {
+  if (!dueDate) return false;
+  return new Date(dueDate) < new Date().setHours(0, 0, 0, 0);
+};
+
 function TaskCard({ task, index, onEdit, onDelete }) {
   const [showEditModal, setShowEditModal] = useState(false);
 
@@ -65,6 +81,38 @@ function TaskCard({ task, index, onEdit, onDelete }) {
               <p className="text-gray-400 text-xs leading-relaxed line-clamp-2">
                 {task.description}
               </p>
+            )}
+
+            {/* Due Date */}
+            {task.dueDate && (
+              <div className="flex items-center gap-1 mt-2">
+                <span
+                  className={`text-xs px-2 py-0.5 rounded-full ${
+                    isOverdue(task.dueDate)
+                      ? "bg-red-900 text-red-300 border border-red-700"
+                      : "bg-blue-900 text-blue-300 border border-blue-700"
+                  }`}
+                >
+                  📅 {formatDate(task.dueDate)}
+                  {isOverdue(task.dueDate) && " (Overdue)"}
+                </span>
+              </div>
+            )}
+
+            {/* Time Tracking */}
+            {(task.estimatedHours > 0 || task.actualHours > 0) && (
+              <div className="flex items-center gap-2 mt-2 text-xs text-gray-400">
+                {task.estimatedHours > 0 && (
+                  <span className="bg-gray-600 px-2 py-0.5 rounded">
+                    Est: {task.estimatedHours}h
+                  </span>
+                )}
+                {task.actualHours > 0 && (
+                  <span className="bg-gray-600 px-2 py-0.5 rounded">
+                    Actual: {task.actualHours}h
+                  </span>
+                )}
+              </div>
             )}
           </div>
         )}

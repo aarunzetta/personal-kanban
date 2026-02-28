@@ -6,6 +6,8 @@ function AddTaskModal({ columns, onAdd, onClose }) {
     description: "",
     priority: "Medium",
     column: "Backlog",
+    dueDate: "",
+    estimatedHours: "",
   });
 
   const handleChange = (e) => {
@@ -60,6 +62,38 @@ function AddTaskModal({ columns, onAdd, onClose }) {
               rows={3}
               className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             />
+          </div>
+
+          {/* Due Date + Estimated Hours Row */}
+          <div className="flex gap-3">
+            <div className="flex-1">
+              <label className="block text-xs font-medium text-gray-400 mb-1">
+                Due Date
+              </label>
+              <input
+                type="date"
+                name="dueDate"
+                value={form.dueDate}
+                onChange={handleChange}
+                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <div className="flex-1">
+              <label className="block text-xs font-medium text-gray-400 mb-1">
+                Est. Hours
+              </label>
+              <input
+                type="number"
+                name="estimatedHours"
+                value={form.estimatedHours}
+                onChange={handleChange}
+                placeholder="0"
+                min="0"
+                step="0.5"
+                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
           </div>
 
           {/* Priority + Column Row */}
